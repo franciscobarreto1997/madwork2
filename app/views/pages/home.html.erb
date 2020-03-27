@@ -1,6 +1,7 @@
 <div class="home-page-container">
-  <%= form_with(url: "/search", method: "get") do %>
-    <%= text_field_tag(:q) %>
-    <%= submit_tag("Search") %>
-  <% end %>
+  <form action="/results" accept-charset="UTF-8" data-remote="true" method="get">
+    <input type="text" name="search" id="search">
+    <select name="city" id="city"><option value="1">Lisbon</option><option value="2">Porto</option><option value="3">Aveiro</option></select>
+    <input type="submit" name="commit" value="Search" id="submit" data-disable-with="Search">
+  </form>
 </div>
