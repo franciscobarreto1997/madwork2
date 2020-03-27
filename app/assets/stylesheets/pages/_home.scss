@@ -1,1 +1,9 @@
-// Specific CSS for your home-page
+.home-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('world.jpg');
+  background-size: cover;
+}
