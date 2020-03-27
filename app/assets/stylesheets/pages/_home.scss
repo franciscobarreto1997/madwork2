@@ -37,6 +37,26 @@
   }
 }
 
+.results-container {
+  padding: 10vh 20vw;
+  background-color: white;
+
+  .card {
+    border: none;
+    border-top: 1px solid #EFEFEF;
+    height: 100px;
+    padding: 20px;
+    line-height: 0.8;
+    background-color: white;
+    transition: 0.3s all;
+
+    &:hover {
+      background-color: #04B0FF;
+      color: white;
+    }
+  }
+}
+
 @media (max-width: 812px) {
   .home-page-container {
     form {
@@ -44,5 +64,9 @@
         width: 150px;
       }
     }
+  }
+
+  .results-container {
+    padding: 10vh 3vw;
   }
 }
