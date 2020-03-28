@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const fetchJobs = () => {
-  const search = document.getElementById('search');
+const fetchJobs = (element, page) => {
+  const div = document.getElementById(element);
   const results = document.querySelector('.results-container');
 
-  if (search) {
-    axios.get('/fetch')
+  if (div) {
+    axios.get(`/${page}`)
       .then((data) => {
         console.log(data.data)
         data.data.forEach((job) => {

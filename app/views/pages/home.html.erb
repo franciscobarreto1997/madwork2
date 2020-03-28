@@ -1,8 +1,13 @@
 <div class="home-page-container">
-  <form action="/results" accept-charset="UTF-8" data-remote="true" method="get">
+  <form action="/results" id="search_form">
     <input type="text" name="search" id="search">
-    <select name="city" id="city"><option value="1">Lisbon</option><option value="2">Porto</option><option value="3">Aveiro</option></select>
+    <select name="city" id="city"><option value="Lisboa">Lisbon</option><option value="Porto">Porto</option><option value="Aveiro">Aveiro</option></select>
     <input type="submit" name="commit" value="Search" id="submit" data-disable-with="Search">
+  </form>
+  <form action="/fetch_results" style="display: none;" id="hidden_form">
+    <input type="text" name="search" id="hidden_search">
+    <select name="city" id="hidden_city"><option value="Lisboa">Lisbon</option><option value="Porto">Porto</option><option value="Aveiro">Aveiro</option></select>
+    <input type="submit" name="commit" value="Search" id="hidden_submit" data-disable-with="Search">
   </form>
 </div>
 <div class="results-container">
