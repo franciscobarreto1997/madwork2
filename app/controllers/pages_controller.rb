@@ -10,20 +10,22 @@ class PagesController < ApplicationController
   end
 
   def results
+    $search = params[:search]
+    $city = params[:city]
   end
 
   def fetch_for_homepage
-    fetch_indeed("Ruby on rails", "Lisboa")
+    scrape_indeed("Ruby on rails", "Lisboa")
   end
 
   def fetch_for_results_page
-    params
+    scrape_indeed($search, $city)
   end
 end
 
   private
 
-  def fetch_indeed(skill, location)
+  def scrape_indeed(skill, location)
     if skill.include?(" ")
       skill.gsub! ' ', '%20'
     end

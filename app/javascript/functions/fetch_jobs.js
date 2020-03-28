@@ -7,7 +7,7 @@ const fetchJobs = (element, page) => {
   if (div) {
     axios.get(`/${page}`)
       .then((data) => {
-        console.log(data.data)
+        console.log(data)
         data.data.forEach((job) => {
 
           const card = `<div class="card">
@@ -21,6 +21,11 @@ const fetchJobs = (element, page) => {
           results.insertAdjacentHTML('afterbegin', card)
         })
       })
+    // fetch('http://localhost:3000/fetch_home')
+    //   .then(response => console.log(response.json()))
+    //   .then((data) => {
+    //     console.log(data)
+    //   })
   }
 }
 
