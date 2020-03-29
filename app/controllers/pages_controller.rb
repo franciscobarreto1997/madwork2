@@ -52,8 +52,12 @@ end
 
   def scrape_one_indeed(url)
     job = {}
-    Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
-    Selenium::WebDriver::Chrome.driver_path = "/app/.chromedriver/bin/chromedriver"
+    chrome_bin = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
+    if chrome_bin
+      p "GOOGLE_CHROME_SHIM IS PRESENT"
+      Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
+      Selenium::WebDriver::Chrome.driver_path = "/app/.chromedriver/bin/chromedriver"
+    end
     browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
     browser.goto url
     doc = Nokogiri::HTML(browser.html)
