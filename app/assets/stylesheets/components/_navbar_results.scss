@@ -1,21 +1,31 @@
 .results {
-  height: 130px;
+  height: 143px;
 }
 
 #query {
-  display: flex;
+  display: block;
+  text-align: center;
 
-  p {
-    font-size: 25px;
+  .title {
+    display: flex;
+    p {
+      font-size: 25px;
+    }
   }
 }
 
 @media (max-width: 812px) {
   #query {
-    display: block;
 
-    p {
-      font-size: 15px;
+    .title {
+      display: block;
+      p {
+        font-size: 15px;
+      }
+    }
+
+    h5 {
+      font-size: 12px;
     }
   }
 }

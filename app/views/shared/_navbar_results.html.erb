@@ -1,8 +1,10 @@
 <div class="navbar results">
   <p></p>
   <div id="query">
-    <%= link_to 'MADWORK', root_path %>
-    <p>| <%= params[:search].capitalize! %> Jobs</p>
+    <div class="title">
+      <%= link_to 'MADWORK', root_path %>
+      <p>| <%= params[:search].capitalize! %> Jobs</p>
+    </div>
   </div>
   <%= link_to 'About', about_path, class: 'about-button' %>
 </div>
