@@ -5,7 +5,7 @@ const animateSearchText = () => {
 
   if (search) {
     let options = {
-      strings: ['ruby on rails', 'node JS', 'python', 'laravell', '.net', 'elixir', 'iOS developer', 'front end developer', 'react', 'php', 'backend developer', 'scala'],
+      strings: ['ruby on rails', 'node JS', 'python', 'laravel', '.net', 'elixir', 'iOS developer', 'front end developer', 'react', 'php', 'backend developer', 'scala'],
       typeSpeed: 80,
       loop: true,
       bindInputFocusEvents: true
