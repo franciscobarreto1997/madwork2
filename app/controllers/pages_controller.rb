@@ -3,7 +3,9 @@ class PagesController < ApplicationController
   skip_before_action :verify_authenticity_token
   include HTTParty
 
+
   def home
+    $browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
   end
 
   def about
@@ -52,15 +54,14 @@ end
 
   def scrape_one_indeed(url)
     job = {}
-    chrome_bin = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
-    if chrome_bin
-      p "GOOGLE_CHROME_SHIM IS PRESENT"
-      Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
-      Selenium::WebDriver::Chrome::Service.driver_path = "/app/.chromedriver/bin/chromedriver"
-    end
-    browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
-    browser.goto url
-    doc = Nokogiri::HTML(browser.html)
+    # chrome_bin = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
+    # if chrome_bin
+    #   p "GOOGLE_CHROME_SHIM IS PRESENT"
+    #   Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
+    #   Selenium::WebDriver::Chrome::Service.driver_path = "/app/.chromedriver/bin/chromedriver"
+    # end
+    $browser.goto url
+    doc = Nokogiri::HTML($browser.html)
     date = doc.css('div.jobsearch-JobMetadataFooter').text.scan(/\d+/)
     date_string = date.empty? ? "" : date[0] + " days ago"
     final_date_string =  ""
