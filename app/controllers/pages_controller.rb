@@ -66,6 +66,6 @@ end
       final_date_string = date_string
     end
     job[:posted_date] = final_date_string
-    job[:description] = doc.css('div#jobDescriptionText').text.gsub("\n", '')
+    job[:description] = doc.css('div#jobDescriptionText').text
     render json: job
   end

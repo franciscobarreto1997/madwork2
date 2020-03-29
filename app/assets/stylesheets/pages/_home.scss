@@ -46,13 +46,24 @@
     border-top: 1px solid #EFEFEF;
     height: 100px;
     padding: 20px;
-    line-height: 0.8;
+    line-height: 0.6;
     background-color: white;
     transition: 0.3s all;
 
     &:hover {
       background-color: #04B0FF;
       color: white;
+    }
+
+    .card-info {
+      #location {
+        font-weight: lighter;
+      }
+    }
+
+    .description {
+      padding: 2vh 10vw;
+      // text-align: center;
     }
   }
 }
@@ -68,5 +79,12 @@
 
   .results-container {
     padding: 10vh 3vw;
+
+    .card {
+     .description {
+        padding: 2vh 2vw;
+        // text-align: center;
+      }
+    }
   }
 }
