@@ -17,6 +17,7 @@ gem 'uglifier'
 gem 'webpacker'
 gem 'httparty'
 gem 'nokogiri'
+gem 'watir'
 
 
 group :development do

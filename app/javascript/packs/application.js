@@ -12,4 +12,3 @@ animateSearchText();
 responsiveNavbar();
 fetchJobs('search', 'fetch_home');
 fetchJobs('query', 'fetch_results');
-
