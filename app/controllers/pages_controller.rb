@@ -56,7 +56,7 @@ end
     if chrome_bin
       p "GOOGLE_CHROME_SHIM IS PRESENT"
       Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
-      Selenium::WebDriver::Chrome.driver_path = "/app/.chromedriver/bin/chromedriver"
+      Selenium::WebDriver::Chrome::Service.driver_path = "/app/.chromedriver/bin/chromedriver"
     end
     browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
     browser.goto url
