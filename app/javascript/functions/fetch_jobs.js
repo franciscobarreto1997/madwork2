@@ -15,7 +15,9 @@ const fetchJobs = (element, page) => {
                           <div class="card-info">
                             <p>${job.company}</p>
                             <p><strong>${job.title}</strong></p>
-                            <p>${job.location}</p>
+                            <p id="location">${job.location}</p>
+                          </div>
+                          <div class="description">
                           </div>
                         </div>`
 
