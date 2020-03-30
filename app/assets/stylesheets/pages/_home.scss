@@ -81,7 +81,7 @@
           a {
             text-decoration: none;
             color: white;
-            background-color: #FF4742;
+            background-color: #04B0FF;
             padding: 13px 42px;
             border-radius: 3px;
           }
@@ -112,8 +112,28 @@
     padding: 1vh 3vw;
 
     .card {
-      height: 125px;
+      height: 175px;
       line-height: 1.0;
+
+      .unopened-card {
+        display: block;
+        .card-info {
+          width: auto;
+          #location {
+            font-weight: lighter;
+          }
+        }
+
+        .source {
+          width: auto;
+          align-items: flex-start;
+          justify-content: flex-start;
+
+          a {
+            padding: 13px 30px;
+          }
+        }
+      }
 
      .description {
         padding: 2vh 2vw;

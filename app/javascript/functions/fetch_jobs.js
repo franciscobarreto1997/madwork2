@@ -1,5 +1,6 @@
 import axios from 'axios';
 import fetchJob from './fetch_job';
+import changeSourceButtonOnHover from './change_source_button_on_hover';
 
 const fetchJobs = (element, page) => {
   const div = document.getElementById(element);
@@ -29,9 +30,10 @@ const fetchJobs = (element, page) => {
           results.insertAdjacentHTML('afterbegin', card);
         })
         if (resultsNavbarQuery) {
-          resultsNavbarQuery.insertAdjacentHTML('beforeend', `<h5>${data.data.length} Jobs found</h5>`)
+          resultsNavbarQuery.insertAdjacentHTML('beforeend', `<h5>${data.data.length} Jobs found</h5>`);
         }
-        fetchJob()
+        fetchJob();
+        changeSourceButtonOnHover();
       })
   }
 }
