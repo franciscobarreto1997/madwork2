@@ -5,11 +5,13 @@ class PagesController < ApplicationController
 
 
   def home
-    $browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
+    if $browser.nil?
+      $browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
+      p "BROWSER CREATED"
+    end
   end
 
   def about
-    $browser = nil
   end
 
   def results
