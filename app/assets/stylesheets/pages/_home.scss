@@ -55,7 +55,6 @@
     line-height: 0.6;
     background-color: white;
     transition: 0.3s all;
-    // display: flex;
 
     &:hover {
       background-color: #04B0FF;
@@ -63,11 +62,32 @@
       cursor: pointer;
     }
 
-    .card-info {
-      #location {
-        font-weight: lighter;
+    .unopened-card {
+      display: flex;
+      .card-info {
+        width: 80%;
+        #location {
+          font-weight: lighter;
+        }
+      }
+
+      .source {
+        // margin-top: 10px;
+        width: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+          a {
+            text-decoration: none;
+            color: white;
+            background-color: #FF4742;
+            padding: 13px 42px;
+            border-radius: 3px;
+          }
       }
     }
+
 
     .description {
       padding: 2vh 10vw;

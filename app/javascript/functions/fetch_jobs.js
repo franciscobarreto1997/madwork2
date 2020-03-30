@@ -12,13 +12,15 @@ const fetchJobs = (element, page) => {
         data.data.forEach((job) => {
 
           const card = `<div class="card" data-url=${job.url}>
-                          <div class="card-info">
-                            <p>${job.company}</p>
-                            <p><strong>${job.title}</strong></p>
-                            <p id="location">${job.location}</p>
-                          </div>
-                          <div class="source">
-                            <a href=${job.url}>Source</a>
+                          <div class="unopened-card">
+                            <div class="card-info">
+                              <p>${job.company}</p>
+                              <p><strong>${job.title}</strong></p>
+                              <p id="location">${job.location}</p>
+                            </div>
+                            <div class="source">
+                              <a href=${job.url}>Source</a>
+                            </div>
                           </div>
                           <div class="description">
                           </div>
