@@ -9,6 +9,7 @@ class PagesController < ApplicationController
   end
 
   def about
+    $browser = nil
   end
 
   def results
