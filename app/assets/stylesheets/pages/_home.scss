@@ -37,8 +37,14 @@
   }
 }
 
+.example-header {
+  padding: 1vh 20vw;
+  background-color: white;
+  margin-top: 60px;
+}
+
 .results-container {
-  padding: 10vh 20vw;
+  padding: 1vh 20vw;
   background-color: white;
 
   .card {
@@ -49,10 +55,12 @@
     line-height: 0.6;
     background-color: white;
     transition: 0.3s all;
+    // display: flex;
 
     &:hover {
       background-color: #04B0FF;
       color: white;
+      cursor: pointer;
     }
 
     .card-info {
@@ -63,7 +71,6 @@
 
     .description {
       padding: 2vh 10vw;
-      // text-align: center;
     }
   }
 }
@@ -77,10 +84,17 @@
     }
   }
 
+  .example-header {
+    padding: 1vh 3vw;
+  }
+
   .results-container {
-    padding: 10vh 3vw;
+    padding: 1vh 3vw;
 
     .card {
+      height: 125px;
+      line-height: 1.0;
+
      .description {
         padding: 2vh 2vw;
         // text-align: center;
