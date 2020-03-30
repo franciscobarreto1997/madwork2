@@ -7,7 +7,6 @@ class PagesController < ApplicationController
   def home
     if $browser.nil?
       $browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
-      p "BROWSER CREATED"
     end
   end
 
@@ -57,12 +56,6 @@ end
 
   def scrape_one_indeed(url)
     job = {}
-    # chrome_bin = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
-    # if chrome_bin
-    #   p "GOOGLE_CHROME_SHIM IS PRESENT"
-    #   Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
-    #   Selenium::WebDriver::Chrome::Service.driver_path = "/app/.chromedriver/bin/chromedriver"
-    # end
     $browser.goto url
     doc = Nokogiri::HTML($browser.html)
     date = doc.css('div.jobsearch-JobMetadataFooter').text.scan(/\d+/)
@@ -76,6 +69,6 @@ end
       final_date_string = date_string
     end
     job[:posted_date] = final_date_string
-    job[:description] = doc.css('div#jobDescriptionText').text
+    job[:description] = doc.css('div#jobDescriptionText').text.gsub(";", "\n")
     render json: job
   end

@@ -17,6 +17,9 @@ const fetchJobs = (element, page) => {
                             <p><strong>${job.title}</strong></p>
                             <p id="location">${job.location}</p>
                           </div>
+                          <div class="source">
+                            <a href=${job.url}>Source</a>
+                          </div>
                           <div class="description">
                           </div>
                         </div>`
