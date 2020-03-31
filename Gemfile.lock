@@ -65,6 +65,8 @@ GEM
     builder (3.2.4)
     byebug (11.1.1)
     childprocess (3.0.0)
+    city-state (0.1.0)
+      rubyzip (>= 1.1)
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
@@ -227,6 +229,7 @@ PLATFORMS
 DEPENDENCIES
   autoprefixer-rails
   bootsnap
+  city-state
   devise
   dotenv-rails
   font-awesome-sass (~> 5.12.0)
