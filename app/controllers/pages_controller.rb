@@ -39,6 +39,11 @@ class PagesController < ApplicationController
     @cities = City.where(country: "England")
     render json: @cities
   end
+
+  def fetch_american_states
+    @cities = City.where(country: "United States")
+    render json: @cities
+  end
 end
 
   private
@@ -49,6 +54,8 @@ end
     end
     if english_cities_array.include? location
       url = "https://www.indeed.co.uk/jobs?q=#{skill}&l=#{location}"
+    elsif american_states_array.include? location
+      url = "https://www.indeed.com/jobs?q=#{skill}&l=#{location}"
     else
       url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location}"
     end
@@ -93,5 +100,12 @@ end
     cities_array = []
     english_cities.each { |city| cities_array << city.name }
     cities_array
+  end
+
+    def american_states_array
+    american_states = City.where(country: "United States")
+    states_array = []
+    american_states.each { |state| states_array << state.name }
+    states_array
   end
 

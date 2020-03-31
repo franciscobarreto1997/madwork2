@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post 'fetch_results', to: 'pages#fetch_for_results_page'
   get 'fetch_portuguese_cities', to: 'pages#fetch_portuguese_cities'
   get 'fetch_england_cities', to: 'pages#fetch_england_cities'
+  get 'fetch_american_states', to: 'pages#fetch_american_states'
 
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
