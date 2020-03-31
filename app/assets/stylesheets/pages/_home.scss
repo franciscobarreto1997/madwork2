@@ -21,18 +21,24 @@
       }
     }
 
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
     #country {
       background-color: white;
       border-radius: 3px;
       border: none;
-      height: 100%
+      height: 50px;
     }
 
     #city {
       background-color: white;
       border-radius: 3px;
       border: none;
-      height: 100%
+      height: 100%;
     }
 
     #submit {

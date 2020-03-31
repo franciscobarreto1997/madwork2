@@ -5,8 +5,14 @@ const burguerMenu = () => {
   burguerMenuButton.addEventListener('click', () => {
     if (menu.style.display == 'none') {
       menu.style.display = 'flex';
+      setTimeout(() => {
+        menu.classList.remove('opacity');
+      }, 15)
     } else {
-      menu.style.display = 'none';
+      menu.classList.add('opacity');
+      setTimeout(() => {
+        menu.style.display = 'none';
+      }, 15)
     }
   })
 
