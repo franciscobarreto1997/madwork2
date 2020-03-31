@@ -149,3 +149,19 @@
     }
   }
 }
+
+@media (max-width: 550px) {
+  .home-page-container {
+    height: auto;
+    padding: 2vh 4vw;
+    align-items: flex-start;
+    form {
+      height: auto;
+      input, select {
+        width: 100% !important;
+        margin-top: 1.5vh;
+        padding: 10px 14px;
+      }
+    }
+  }
+}

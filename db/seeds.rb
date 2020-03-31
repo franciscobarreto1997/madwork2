@@ -16,7 +16,7 @@ portuguese_cities.each do |key, value|
   City.create!(name: portuguese_cities[key], country: "Portugal")
 end
 
-england_cities = %w[London Birmingham Manchester Glasgow Newcastle Sheffield Liverpool Leeds Bristol Belfast].sort
+england_cities = %w[London Birmingham Manchester Glasgow Newcastle Sheffield Liverpool Leeds Bristol].sort
 puts "Creating #{england_cities.count} english cities"
 england_cities.each do |city|
   City.create!(name: city, country: "England")
