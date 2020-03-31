@@ -1,6 +1,8 @@
+import axios from 'axios';
+import inject from './inject';
+
 const injectCities = () => {
   const selectCountryElement = document.getElementById('country');
-  const selectCityElement = document.getElementById('city');
 
   if (selectCountryElement) {
     selectCountryElement.addEventListener('change', (event) => {
@@ -8,20 +10,22 @@ const injectCities = () => {
 
       switch(selectedCountry) {
         case 'Portugal':
-          console.log('Portugal');
+          axios.get('/fetch_portuguese_cities')
+            .then(data => inject(data.data))
           break;
         case 'United States':
           console.log('United States');
           break;
         case 'England':
-          console.log('England');
+          axios.get('/fetch_england_cities')
+            .then(data => inject(data.data))
           break;
         default:
           break;
       }
     })
   }
-
 }
+
 
 export default injectCities;

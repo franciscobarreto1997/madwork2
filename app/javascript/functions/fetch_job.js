@@ -9,8 +9,8 @@ const fetchJob = () => {
       const url = card.dataset.url
 
       if (card.querySelector('#description')) {
-        card.style.height = '175px'
-        card.style.lineHeight = '1.0'
+        card.style.height = '100px'
+        card.style.lineHeight = '0.6'
         card.querySelector('.description').innerHTML = ''
       } else {
         axios.post('/fetch_results', {

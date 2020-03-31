@@ -29,6 +29,16 @@ class PagesController < ApplicationController
       scrape_all_indeed($search, $city)
     end
   end
+
+  def fetch_portuguese_cities
+    @cities = City.where(country: "Portugal")
+    render json: @cities
+  end
+
+  def fetch_england_cities
+    @cities = City.where(country: "England")
+    render json: @cities
+  end
 end
 
   private
@@ -72,3 +82,4 @@ end
     job[:description] = doc.css('div#jobDescriptionText').text.gsub(";", "\n")
     render json: job
   end
+
