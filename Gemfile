@@ -18,7 +18,7 @@ gem 'webpacker'
 gem 'httparty'
 gem 'nokogiri'
 gem 'watir'
-
+gem 'city-state'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
