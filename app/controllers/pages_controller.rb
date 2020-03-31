@@ -47,7 +47,11 @@ end
     if skill.include?(" ")
       skill.gsub! ' ', '%20'
     end
-    url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location}"
+    if english_cities_array.include? location
+      url = "https://www.indeed.co.uk/jobs?q=#{skill}&l=#{location}"
+    else
+      url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location}"
+    end
     unparsed_page = HTTParty.get(url)
     parsed_page = Nokogiri::HTML(unparsed_page)
     jobs = []
@@ -81,5 +85,13 @@ end
     job[:posted_date] = final_date_string
     job[:description] = doc.css('div#jobDescriptionText').text.gsub(";", "\n")
     render json: job
+  end
+
+
+  def english_cities_array
+    english_cities = City.where(country: "England")
+    cities_array = []
+    english_cities.each { |city| cities_array << city.name }
+    cities_array
   end
 
