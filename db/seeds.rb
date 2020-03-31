@@ -22,4 +22,10 @@ england_cities.each do |city|
   City.create!(name: city, country: "England")
 end
 
+us_states = CS.get :us
+puts "Creating #{us_states.count} american states"
+us_states.each do |key, value|
+  City.create!(name: us_states[key], country: "United States")
+end
+
 

@@ -14,7 +14,8 @@ const injectCities = () => {
             .then(data => inject(data.data))
           break;
         case 'United States':
-          console.log('United States');
+          axios.get('/fetch_american_states')
+            .then(data => inject(data.data))
           break;
         case 'England':
           axios.get('/fetch_england_cities')
