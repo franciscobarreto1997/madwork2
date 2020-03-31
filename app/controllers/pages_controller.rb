@@ -53,11 +53,14 @@ end
       skill.gsub! ' ', '%20'
     end
     if english_cities_array.include? location
-      url = "https://www.indeed.co.uk/jobs?q=#{skill}&l=#{location}"
+      location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
+      url = "https://www.indeed.co.uk/jobs?q=#{skill}&l=#{location_for_url}"
     elsif american_states_array.include? location
-      url = "https://www.indeed.com/jobs?q=#{skill}&l=#{location}"
+      location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
+      url = "https://www.indeed.com/jobs?q=#{skill}&l=#{location_for_url}"
     else
-      url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location}"
+      location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
+      url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location_for_url}"
     end
     unparsed_page = HTTParty.get(url)
     parsed_page = Nokogiri::HTML(unparsed_page)
