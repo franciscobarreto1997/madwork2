@@ -19,7 +19,7 @@ class PagesController < ApplicationController
   end
 
   def fetch_for_homepage
-    scrape_all_indeed("Ruby on rails", "Lisboa")
+    render json: scrape_all_indeed("Ruby on rails", "Lisboa")
   end
 
   def fetch_for_results_page
@@ -28,8 +28,9 @@ class PagesController < ApplicationController
     elsif american_states_array.include? $search
       scrape_all_indeed($search, $city)
     else
-      scrape_all_indeed($search, $city)
-      scrape_all_landing_jobs($search, $city)
+      indeed_jobs = scrape_all_indeed($search, $city)
+      landing_jobs = scrape_all_landing_jobs($search, $city)
+      render json: indeed_jobs + landing_jobs
     end
   end
 
@@ -73,8 +74,7 @@ end
         title: card.css('div.title', 'a.title').text.gsub("\n",''),
         location: location,
         url: url + "&vjk=" + card.attribute('data-jk'),
-        company: card.css('div.sjcl', 'div.span.company').text.gsub("\n",'').gsub(location, '').match(/[a-zA-Z]+/)[0],
-        summary: card.css('div.summary').text.gsub("\n", '')
+        company: card.css('div.sjcl', 'div.span.company').text.gsub("\n",'').gsub(location, '').match(/[a-zA-Z]+/)[0]
       }
       jobs << job
     end
@@ -101,18 +101,23 @@ end
   end
 
   def scrape_all_landing_jobs(skill, location)
-    country_code = english_cities_array.include? location ? "EN" : "PT"
+    country_code = ""
+    if english_cities_array.include? location
+      country_code = "EN"
+    else
+      country_code = "PT"
+    end
     if skill.include? " "
       skill.gsub!(" ", "+")
     end
-    url = "https://landing.jobs/jobs?city_search=#{location.capitalize}&country=#{country_code}&page=1&q=#{skill}&hd=false&t_co=false&t_st=false"
+    url = "https://landing.jobs/jobs?city_search=#{location}&country=#{country_code}&page=1&q=#{skill}&hd=false&t_co=false&t_st=false"
     $browser.goto url
     parsed_page = Nokogiri::HTML($browser.html)
     jobs = []
     parsed_page.css('li.lj-jobcard').each do |card|
       job = {
         title: card.css('a.lj-jobcard-name').text,
-        location: city,
+        location: location,
         url: card.css('a.lj-jobcard-name').attribute('href').text,
         company: card.css('a.lj-jobcard-company').text
       }
@@ -120,7 +125,6 @@ end
     end
     jobs
   end
-
 
   def english_cities_array
     english_cities = City.where(country: "England")
