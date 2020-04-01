@@ -89,6 +89,10 @@ end
     job = {}
     $browser.goto url
     doc = Nokogiri::HTML($browser.html)
+    divs = []
+    doc.css('div.jobsearch-jobDescriptionText').each do |div|
+      divs << div.to_s.gsub("\n", "")
+    end
     date = doc.css('div.jobsearch-JobMetadataFooter').text.scan(/\d+/)
     date_string = date.empty? ? "" : date[0] + " days ago"
     final_date_string =  ""
@@ -100,7 +104,7 @@ end
       final_date_string = date_string
     end
     job[:posted_date] = final_date_string
-    job[:description] = doc.css('div#jobDescriptionText').text.gsub(";", "\n")
+    job[:description] = divs.join
     render json: job
   end
 

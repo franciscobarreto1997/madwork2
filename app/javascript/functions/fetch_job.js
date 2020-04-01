@@ -22,10 +22,13 @@ const fetchJob = () => {
         axios.post('/fetch_results', {
           url: url
         }).then((data) => {
-          console.log(data.data)
           card.style.height = 'auto'
           card.style.lineHeight = '1.8'
-          card.querySelector('.description').insertAdjacentHTML('afterbegin', `<p>${data.data.posted_date}</p>`)
+          let date = data.data.posted_date
+          if (date == undefined) {
+            date = "This website doesn't display a date :/"
+          }
+          card.querySelector('.description').insertAdjacentHTML('afterbegin', `<p>${date}</p>`)
           card.querySelector('.description').insertAdjacentHTML('beforeend', `<p id="description">${data.data.description}</p>`)
         })
       }
