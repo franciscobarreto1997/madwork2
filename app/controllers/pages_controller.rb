@@ -34,7 +34,7 @@ class PagesController < ApplicationController
     else
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
-      render json: indeed_jobs + landing_jobs
+      render json: landing_jobs + indeed_jobs
     end
   end
 
@@ -78,7 +78,8 @@ end
         title: card.css('div.title', 'a.title').text.gsub("\n",''),
         location: location,
         url: url + "&vjk=" + card.attribute('data-jk'),
-        company: card.css('div.sjcl', 'div.span.company').text.gsub("\n",'').gsub(location, '').match(/[a-zA-Z]+/)[0]
+        company: card.css('div.sjcl', 'div.span.company').text.gsub("\n",'').gsub(location, '').match(/[a-zA-Z]+/)[0],
+        source: "Indeed"
       }
       jobs << job
     end
@@ -127,7 +128,8 @@ end
         title: card.css('a.lj-jobcard-name').text,
         location: location,
         url: card.css('a.lj-jobcard-name').attribute('href').text,
-        company: card.css('a.lj-jobcard-company').text
+        company: card.css('a.lj-jobcard-company').text,
+        source: "Landing.jobs"
       }
       jobs << job
     end
@@ -154,7 +156,7 @@ end
     cities_array
   end
 
-    def american_states_array
+  def american_states_array
     american_states = City.where(country: "United States")
     states_array = []
     american_states.each { |state| states_array << state.name }
