@@ -1,6 +1,6 @@
 import axios from 'axios';
 import fetchJob from './fetch_job';
-import changeSourceButtonOnHover from './change_source_button_on_hover';
+import colorSourceButton from './color_source_button';
 
 const fetchJobs = (element, page) => {
   const div = document.getElementById(element);
@@ -19,7 +19,7 @@ const fetchJobs = (element, page) => {
                               <p id="location">${job.location}</p>
                             </div>
                             <div class="source">
-                              <a href=${job.url}>Source</a>
+                              <a href=${job.url}>${job.source}</a>
                             </div>
                           </div>
                           <div class="description">
@@ -31,8 +31,8 @@ const fetchJobs = (element, page) => {
         if (resultsNavbarQuery) {
           resultsNavbarQuery.insertAdjacentHTML('beforeend', `<h5>${data.data.length} Jobs found</h5>`);
         }
+        colorSourceButton();
         fetchJob();
-        changeSourceButtonOnHover();
       })
   }
 }
