@@ -25,8 +25,11 @@ class PagesController < ApplicationController
   def fetch_for_results_page
     if params.key?('url')
       scrape_one_indeed(params[:url])
+    elsif american_states_array.include? $search
+      scrape_all_indeed($search, $city)
     else
       scrape_all_indeed($search, $city)
+      scrape_all_landing_jobs($search, $city)
     end
   end
 
@@ -75,7 +78,7 @@ end
       }
       jobs << job
     end
-    render json: jobs
+    jobs
   end
 
   def scrape_one_indeed(url)
@@ -95,6 +98,27 @@ end
     job[:posted_date] = final_date_string
     job[:description] = doc.css('div#jobDescriptionText').text.gsub(";", "\n")
     render json: job
+  end
+
+  def scrape_all_landing_jobs(skill, location)
+    country_code = english_cities_array.include? location ? "EN" : "PT"
+    if skill.include? " "
+      skill.gsub!(" ", "+")
+    end
+    url = "https://landing.jobs/jobs?city_search=#{location.capitalize}&country=#{country_code}&page=1&q=#{skill}&hd=false&t_co=false&t_st=false"
+    $browser.goto url
+    parsed_page = Nokogiri::HTML($browser.html)
+    jobs = []
+    parsed_page.css('li.lj-jobcard').each do |card|
+      job = {
+        title: card.css('a.lj-jobcard-name').text,
+        location: city,
+        url: card.css('a.lj-jobcard-name').attribute('href').text,
+        company: card.css('a.lj-jobcard-company').text
+      }
+      jobs << job
+    end
+    jobs
   end
 
 
