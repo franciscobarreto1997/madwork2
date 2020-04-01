@@ -11,6 +11,7 @@ const fetchJobs = (element, page) => {
     axios.get(`/${page}`)
       .then((data) => {
         data.data.forEach((job) => {
+          console.log(job)
           const card = `<div class="card" data-url=${job.url}>
                           <div class="unopened-card">
                             <div class="card-info">
