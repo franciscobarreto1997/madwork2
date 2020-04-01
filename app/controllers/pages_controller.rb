@@ -24,7 +24,11 @@ class PagesController < ApplicationController
 
   def fetch_for_results_page
     if params.key?('url')
-      scrape_one_indeed(params[:url])
+      if params[:url].include? "indeed"
+        scrape_one_indeed(params[:url])
+      else
+        scrape_one_landing_jobs(params[:url])
+      end
     elsif american_states_array.include? $search
       scrape_all_indeed($search, $city)
     else
@@ -124,6 +128,19 @@ end
       jobs << job
     end
     jobs
+  end
+
+  def scrape_one_landing_jobs(url)
+    job = {}
+    parsed_page = Nokogiri::HTML(HTTParty.get(url))
+    divs = []
+    parsed_page.css('section.ld-job-offer-section').each do |div|
+      divs << div.to_s.gsub("\n", "")
+    end
+    divs.pop
+    divs.shift
+    job[:description] = divs.join
+    render json: job
   end
 
   def english_cities_array
