@@ -38,13 +38,13 @@ const fetchJobs = (element, page) => {
         fetchJob();
       }).then((data) => {
         if (homePageContainer) {
-          if (localStorage.getItem('firstVisit') === null) {
+          // if (localStorage.getItem('firstVisit') === null) {
             document.querySelector('.card').setAttribute('data-intro', 'Click on the cards to see the job description');
             document.querySelector('.card .source a').setAttribute('data-intro', 'Click on the source button to see the job listing on the original page');
             introJs().start();
-            localStorage.setItem('firstVisit', 'false')
+            // localStorage.setItem('firstVisit', 'false')
           }
-        }
+        // }
       })
   }
 }
