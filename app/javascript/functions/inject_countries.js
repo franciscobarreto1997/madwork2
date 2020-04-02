@@ -1,6 +1,6 @@
 const injectCountries = () => {
   const selectCountryElement = document.getElementById('country');
-  const countries = ['Portugal', 'England', 'France', 'United States']
+  const countries = ['Portugal', 'England', 'France', 'Germany', 'United States']
 
   if (selectCountryElement) {
     countries.forEach((country) => {

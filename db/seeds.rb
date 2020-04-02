@@ -28,10 +28,14 @@ us_states.each do |key, value|
   City.create!(name: us_states[key], country: "United States")
 end
 
-french_cities = %w[Paris Marseille Lyon Toulouse Nice Nantes Montpellier Strasbourg Bordeuax Lille].sort
+french_cities = %w[Paris Marseille Lyon Toulouse Nice Nantes Montpellier Strasbourg Bordeaux Lille].sort
 puts "Creating #{french_cities.count} french_cities"
 french_cities.each do |city|
   City.create!(name: city, country: "France")
 end
 
-
+german_cities = %w[Berlin Hamburg Munich Cologne Frankfurt Essen Stuttgart Dortmund Düsseldorf Bremen Hanover Leipzig].sort
+puts "Creating #{german_cities.count} german cities"
+german_cities.each do |city|
+  City.create!(name: city, country: "Germany")
+end
