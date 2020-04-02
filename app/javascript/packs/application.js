@@ -4,7 +4,6 @@ require("channels")
 
 import "bootstrap";
 import './application.css';
-import introJs from 'intro.js';
 
 import animateSearchText from '../functions/animate_search_text';
 import responsiveNavbar from '../functions/responsive_navbar';
@@ -22,4 +21,3 @@ responsiveNavbar();
 fetchJobs('search', 'fetch_home');
 fetchJobs('query', 'fetch_results');
 autocomplete();
-introJs().start();
