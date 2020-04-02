@@ -72,6 +72,11 @@ class PagesController < ApplicationController
     @cities = City.where(country: "Netherlands")
     render json: @cities
   end
+
+  def fetch_italian_cities
+    @cities = City.where(country: "Italy")
+    render json: @cities
+  end
 end
 
   private
@@ -98,6 +103,10 @@ end
     elsif dutch_cities_array.include? location
       location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
       url = "https://www.indeed.nl/vacatures?q=#{skill}&l=#{location_for_url}"
+    elsif italian_cities_array.include? location
+      location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
+      url = "https://it.indeed.com/jobs?q=#{skill}&l=#{location_for_url}"
+      p url
     else
       location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
       url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location_for_url}"
@@ -228,5 +237,12 @@ end
     dutch_cities = City.where(country: "Netherlands")
     cities_array = []
     dutch_cities.each { |city| cities_array << city.name }
+    cities_array
+  end
+
+  def italian_cities_array
+    italian_cities = City.where(country: "Italy")
+    cities_array = []
+    italian_cities.each { |city| cities_array << city.name }
     cities_array
   end

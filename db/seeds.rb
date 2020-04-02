@@ -51,3 +51,11 @@ puts "Creating #{dutch_cities.count} dutch cities"
 dutch_cities.sort.each do |city|
   City.create!(name: city, country: "Netherlands")
 end
+
+italian_cities = %w[Roma Milano Napoli Turin Palermo Genoa Bologna Catania Bari Messina].sort
+puts "Creating #{italian_cities.count} italian cities"
+italian_cities.each do |city|
+  City.create!(name: city, country: "Italy")
+end
+
+
