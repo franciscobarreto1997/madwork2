@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get 'fetch_german_cities', to: 'pages#fetch_german_cities'
   get 'fetch_spanish_cities', to: 'pages#fetch_spanish_cities'
   get 'fetch_dutch_cities', to: 'pages#fetch_dutch_cities'
+  get 'fetch_italian_cities', to: 'pages#fetch_italian_cities'
+
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
