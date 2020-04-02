@@ -39,3 +39,9 @@ puts "Creating #{german_cities.count} german cities"
 german_cities.each do |city|
   City.create!(name: city, country: "Germany")
 end
+
+spanish_cities = %w[Madrid Barcelona Valencia Sevilla Zaragoza Málaga Murcia Bilbao Alicante Cordova].sort
+puts "Creating #{spanish_cities.count} spanish cities"
+spanish_cities.each do |city|
+  City.create!(name: city, country: "Spain")
+end
