@@ -57,6 +57,11 @@ class PagesController < ApplicationController
     @cities = City.where(country: "France")
     render json: @cities
   end
+
+  def fetch_german_cities
+    @cities = City.where(country: "Germany")
+    render json: @cities
+  end
 end
 
   private
@@ -74,7 +79,9 @@ end
     elsif french_cities_array.include? location
       location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
       url = "https://www.indeed.fr/jobs?q=#{skill}&l=#{location_for_url}"
-      p url
+    elsif german_cities_array.include? location
+      location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
+      url = "https://de.indeed.com/Jobs?q=#{skill}&l=#{location}"
     else
       location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
       url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location_for_url}"
@@ -122,6 +129,8 @@ end
     country_code = ""
     if english_cities_array.include? location
       country_code = "EN"
+    elsif german_cities_array.include? location
+      country_code = "DE"
     else
       country_code = "PT"
     end
@@ -129,7 +138,9 @@ end
       skill.gsub!(" ", "+")
     end
     url = "https://landing.jobs/jobs?city_search=#{location}&country=#{country_code}&page=1&q=#{skill}&hd=false&t_co=false&t_st=false"
+    p url
     $browser.goto url
+    sleep 3
     parsed_page = Nokogiri::HTML($browser.html)
     jobs = []
     parsed_page.css('li.lj-jobcard').each do |card|
@@ -179,3 +190,9 @@ end
     cities_array
   end
 
+  def german_cities_array
+    german_cities = City.where(country: "Germany")
+    cities_array = []
+    german_cities.each { |city| cities_array << city.name }
+    cities_array
+  end
