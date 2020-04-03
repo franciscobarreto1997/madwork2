@@ -118,12 +118,20 @@ end
     parsed_page = Nokogiri::HTML(unparsed_page)
     jobs = []
     parsed_page.css('div.jobsearch-SerpJobCard').each do |card|
+      scraped_date = card.css('span.date').text.scan(/\d+/).join
+      final_date = ""
+      if card.css('span.date').text.include? "30"
+        final_date = "+" + scraped_date + "d"
+      else
+        final_date = scraped_date + "d"
+      end
       job = {
         title: card.css('div.title', 'a.title').text.gsub("\n",''),
         location: location,
         url: url + "&vjk=" + card.attribute('data-jk'),
         company: card.css('div.sjcl', 'div.span.company').text.gsub("\n",'').gsub(location, '').match(/[a-zA-Z]+/)[0],
-        source: "Indeed"
+        source: "Indeed",
+        posted_date: final_date
       }
       jobs << job
     end
@@ -172,7 +180,7 @@ end
     url = "https://landing.jobs/jobs?city_search=#{location}&country=#{country_code}&page=1&q=#{skill}&hd=false&t_co=false&t_st=false"
     p url
     $browser.goto url
-    sleep 3
+    sleep 4
     parsed_page = Nokogiri::HTML($browser.html)
     jobs = []
     parsed_page.css('li.lj-jobcard').each do |card|
@@ -212,12 +220,23 @@ end
     parsed_page = Nokogiri::HTML(HTTParty.get(url))
     jobs = []
     parsed_page.css('tr.job').each do |job|
+      scraped_date = job.css('span.relatize').text
+      if (scraped_date.include? "days") || (scraped_date.include? "day")
+        final_date = scraped_date.scan(/\d+/).join + "d"
+      elsif (scraped_date.include? "months") || (scraped_date.include? "month")
+        final_date = scraped_date.scan(/\d+/).join + "m"
+      elsif (scraped_date.include? "hours") || (scraped_date.include? "hour")
+        final_date = scraped_date.scan(/\d+/).join + "h"
+      else
+        final_date = scraped_date.scan(/\d+/).join + "y"
+      end
       job = {
         title: job.css('td.title h4 a').text,
         location: job.css('td.meta span.location').text,
         url: job.css('td.title h4 a').attribute('href').value,
         company: job.css('p.source a').text,
-        source: "GitHub Jobs"
+        source: "GitHub Jobs",
+        posted_date: final_date
       }
       jobs << job
     end
