@@ -37,7 +37,9 @@ class PagesController < ApplicationController
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
       github_jobs = scrape_all_github_jobs($search, $city)
-      render json: landing_jobs + indeed_jobs + github_jobs
+      all_jobs = indeed_jobs + github_jobs
+      ordered_jobs = order_cards_by_date(all_jobs)
+      render json: landing_jobs + ordered_jobs
     end
   end
 
@@ -109,7 +111,6 @@ end
     elsif italian_cities_array.include? location
       location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
       url = "https://it.indeed.com/jobs?q=#{skill}&l=#{location_for_url}"
-      p url
     else
       location_for_url = location.include?(" ") ? location.gsub(' ', '%20') : location
       url = "https://www.indeed.pt/jobs?q=#{skill}&l=#{location_for_url}"
@@ -249,6 +250,14 @@ end
       description: parsed_page.css('div.main').to_s.gsub("\n", "")
     }
     render json: job
+  end
+
+  def order_cards_by_date(array)
+    sorted_array = []
+    array.each do |element|
+     sorted_array = array.sort_by { |element| element[:posted_date].match(/\d+/).to_s.to_i }
+    end
+    sorted_array.reverse
   end
 
   def english_cities_array
