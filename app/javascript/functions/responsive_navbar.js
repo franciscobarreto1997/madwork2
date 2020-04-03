@@ -16,7 +16,7 @@ const widthChange = (mq) => {
     aboutButton.parentNode.removeChild(aboutButton);
     navbar.insertAdjacentHTML('beforeend','<i class="fas fa-bars"></i>');
 
-    document.querySelector('.navbar i').style.fontSize = '25px';
+    document.querySelector('.navbar i').style.fontSize = '35px';
     burguerMenu()
   }
 }
