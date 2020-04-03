@@ -19,7 +19,8 @@ class PagesController < ApplicationController
   end
 
   def fetch_for_homepage
-    render json: scrape_all_indeed("Ruby on rails", "Lisboa")
+    ordered_jobs = order_indeed_by_date(scrape_all_indeed("Ruby on rails", "Lisboa"))
+    render json: ordered_jobs
   end
 
   def fetch_for_results_page
@@ -37,9 +38,9 @@ class PagesController < ApplicationController
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
       github_jobs = scrape_all_github_jobs($search, $city)
-      all_jobs = indeed_jobs + github_jobs
-      ordered_jobs = order_cards_by_date(all_jobs)
-      render json: landing_jobs + ordered_jobs
+      ordered_indeed = order_indeed_by_date(indeed_jobs)
+      ordered_github = order_github_jobs_by_date(github_jobs)
+      render json: landing_jobs + ordered_indeed + ordered_github
     end
   end
 
@@ -220,16 +221,21 @@ end
     url = "https://jobs.github.com/positions?utf8=%E2%9C%93&description=#{skill}&location=#{location}"
     parsed_page = Nokogiri::HTML(HTTParty.get(url))
     jobs = []
+
     parsed_page.css('tr.job').each do |job|
       scraped_date = job.css('span.relatize').text
       if (scraped_date.include? "days") || (scraped_date.include? "day")
         final_date = scraped_date.scan(/\d+/).join + "d"
+        date_code = 2
       elsif (scraped_date.include? "months") || (scraped_date.include? "month")
         final_date = scraped_date.scan(/\d+/).join + "m"
+        date_code = 3
       elsif (scraped_date.include? "hours") || (scraped_date.include? "hour")
         final_date = scraped_date.scan(/\d+/).join + "h"
+        date_code = 1
       else
         final_date = scraped_date.scan(/\d+/).join + "y"
+        date_code = 4
       end
       job = {
         title: job.css('td.title h4 a').text,
@@ -237,7 +243,8 @@ end
         url: job.css('td.title h4 a').attribute('href').value,
         company: job.css('p.source a').text,
         source: "GitHub Jobs",
-        posted_date: final_date
+        posted_date: final_date,
+        date_code: date_code
       }
       jobs << job
     end
@@ -252,10 +259,18 @@ end
     render json: job
   end
 
-  def order_cards_by_date(array)
+  def order_indeed_by_date(array)
     sorted_array = []
     array.each do |element|
-     sorted_array = array.sort_by { |element| element[:posted_date].match(/\d+/).to_s.to_i }
+      sorted_array = array.sort_by { |element|  element[:posted_date].match(/\d+/).to_s.to_i }
+    end
+    sorted_array.reverse
+  end
+
+  def order_github_jobs_by_date(array)
+    sorted_array = []
+    array.each do |element|
+      sorted_array = array.sort_by { |element| [element[:date_code], element[:posted_date].match(/\d+/).to_s.to_i] }
     end
     sorted_array.reverse
   end
