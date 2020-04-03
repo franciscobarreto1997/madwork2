@@ -15,6 +15,9 @@ const fetchJobs = (element, page) => {
       .then((data) => {
         console.log(data.data)
         data.data.forEach((job) => {
+          if (job.posted_date == undefined) {
+            job.posted_date = "no date"
+          }
           const card = `<div class="card" data-url=${job.url}>
                           <div class="unopened-card">
                             <div class="card-info">
