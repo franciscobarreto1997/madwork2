@@ -77,9 +77,20 @@
     .unopened-card {
       display: flex;
       .card-info {
-        width: 80%;
+        width: 70%;
         #location {
           font-weight: lighter;
+        }
+      }
+
+      .posted-date {
+        width: 10%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+          font-size: 13px;
         }
       }
 

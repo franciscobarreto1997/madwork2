@@ -13,6 +13,7 @@ const fetchJobs = (element, page) => {
   if (div) {
     axios.get(`/${page}`)
       .then((data) => {
+        console.log(data.data)
         data.data.forEach((job) => {
           const card = `<div class="card" data-url=${job.url}>
                           <div class="unopened-card">
@@ -20,6 +21,9 @@ const fetchJobs = (element, page) => {
                               <p>${job.company}</p>
                               <p><strong>${job.title}</strong></p>
                               <p id="location">${job.location}</p>
+                            </div>
+                            <div class="posted-date">
+                              <p>${job.posted_date}</p>
                             </div>
                             <div class="source">
                               <a href=${job.url}>${job.source}</a>
