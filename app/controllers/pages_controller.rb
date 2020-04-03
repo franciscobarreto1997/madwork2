@@ -26,6 +26,8 @@ class PagesController < ApplicationController
     if params.key?('url')
       if params[:url].include? "indeed"
         scrape_one_indeed(params[:url])
+      elsif params[:url].include? "github"
+        scrape_one_github_jobs(params[:url])
       else
         scrape_one_landing_jobs(params[:url])
       end
@@ -220,6 +222,14 @@ end
       jobs << job
     end
     jobs
+  end
+
+  def scrape_one_github_jobs(url)
+    parsed_page = Nokogiri::HTML(HTTParty.get(url))
+    job = {
+      description: parsed_page.css('div.main').to_s.gsub("\n", "")
+    }
+    render json: job
   end
 
   def english_cities_array
