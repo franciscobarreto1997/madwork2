@@ -34,7 +34,8 @@ class PagesController < ApplicationController
     else
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
-      render json: landing_jobs + indeed_jobs
+      github_jobs = scrape_all_github_jobs($search, $city)
+      render json: landing_jobs + indeed_jobs + github_jobs
     end
   end
 
@@ -196,6 +197,29 @@ end
     divs.shift
     job[:description] = divs.join
     render json: job
+  end
+
+  def scrape_all_github_jobs(skill, location)
+    if skill.include? " "
+      skill.gsub!(" ", "+")
+    end
+    if location.include? " "
+      location.gsub!(" ", "+")
+    end
+    url = "https://jobs.github.com/positions?utf8=%E2%9C%93&description=#{skill}&location=#{location}"
+    parsed_page = Nokogiri::HTML(HTTParty.get(url))
+    jobs = []
+    parsed_page.css('tr.job').each do |job|
+      job = {
+        title: job.css('td.title h4 a').text,
+        location: job.css('td.meta span.location').text,
+        url: job.css('td.title h4 a').attribute('href').value,
+        company: job.css('p.source a').text,
+        source: "GitHub Jobs"
+      }
+      jobs << job
+    end
+    jobs
   end
 
   def english_cities_array

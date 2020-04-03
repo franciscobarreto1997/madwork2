@@ -11,6 +11,9 @@ const colorSourceButton = () => {
         case "Indeed":
           button.style.backgroundColor = '#2164F3';
           break;
+        case "GitHub Jobs":
+          button.style.backgroundColor = '#2B7FC3';
+          break;
         default:
           break;
       }
