@@ -19,7 +19,7 @@ class PagesController < ApplicationController
   end
 
   def fetch_for_homepage
-    ordered_jobs = order_indeed_by_date(scrape_all_indeed("Ruby on rails", "Lisboa"))
+    ordered_jobs = order_cards_by_date(scrape_all_indeed("Ruby on rails", "Lisboa"))
     render json: ordered_jobs
   end
 
@@ -34,8 +34,6 @@ class PagesController < ApplicationController
       else
         scrape_one_landing_jobs(params[:url])
       end
-    elsif american_states_array.include? $search
-      scrape_all_indeed($search, $city)
     elsif $city == "Remote"
       ordered_jobs = order_cards_by_date(scrape_all_remoteok($search))
       render json: ordered_jobs
@@ -43,7 +41,8 @@ class PagesController < ApplicationController
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
       github_jobs = scrape_all_github_jobs($search, $city)
-      ordered_jobs =  order_cards_by_date(indeed_jobs + github_jobs)
+      stackoverflow_jobs = scrape_all_stackoverflow($search, $city)
+      ordered_jobs =  order_cards_by_date(indeed_jobs + github_jobs + stackoverflow_jobs)
       render json: landing_jobs + ordered_jobs
     end
   end
@@ -325,6 +324,37 @@ end
       description: parsed_page.css('div.description').to_s.gsub("\n", "")
     }
     render json: job
+  end
+
+  def scrape_all_stackoverflow(skill, location)
+    if skill.include? " "
+      skill.gsub!(" ", "+")
+    end
+    if location.include? " "
+      location.gsub!(" ", "+")
+    end
+    url = "https://stackoverflow.com/jobs?id=377995&pg=&sort=i&q=#{skill}&l=#{location}&d=20&u=Km&tl=&td=&s=&c=EUR&ms=&mxs=&cl=&cd="
+    parsed_page = Nokogiri::HTML(HTTParty.get(url))
+    jobs = []
+    parsed_page.css('div.-job.js-result').each do |div|
+      date = div.css('div.grid div.grid--cell div.mt4.fs-caption div.grid--cell').first.text.gsub("ago", "").gsub(" ","").gsub("<", "")
+      if date.include? "h"
+        date_code = 1
+      else
+        date_code = 2
+      end
+      job = {
+        title: div.css('div.grid div.grid--cell h2.mb4 a').attribute('title').to_s,
+        location: div.css('div.grid div.grid--cell h3.fc-black-700 span').text.gsub(" ", "").gsub("\r", "").split("\n")[2],
+        url: "https://stackoverflow.com" + div.css('div.grid div.grid--cell h2.mb4 a').attribute('href').to_s,
+        company: div.css('div.grid div.grid--cell h3.fc-black-700 span').text.gsub(" ", "").gsub("\r", "").split("\n")[0],
+        source: "stackoverflow",
+        posted_date: date,
+        date_code: date_code
+      }
+      jobs << job
+    end
+    jobs
   end
 
   def order_cards_by_date(array)
