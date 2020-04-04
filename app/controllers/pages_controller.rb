@@ -29,6 +29,8 @@ class PagesController < ApplicationController
         scrape_one_indeed(params[:url])
       elsif params[:url].include? "github"
         scrape_one_github_jobs(params[:url])
+      elsif params[:url].include? "remoteok"
+        scrape_one_remoteok(params[:url])
       else
         scrape_one_landing_jobs(params[:url])
       end
@@ -313,6 +315,16 @@ end
       jobs << job
     end
     jobs
+  end
+
+  def scrape_one_remoteok(url)
+    browser = Watir::Browser.new :chrome, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
+    browser.goto url
+    parsed_page = Nokogiri::HTML(browser.html)
+    job = {
+      description: parsed_page.css('div.description').to_s.gsub("\n", "")
+    }
+    render json: job
   end
 
   def order_cards_by_date(array)
