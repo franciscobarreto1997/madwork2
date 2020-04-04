@@ -14,6 +14,9 @@ const colorSourceButton = () => {
         case "GitHub Jobs":
           button.style.backgroundColor = '#2B7FC3';
           break;
+        case "remote|OK":
+          button.style.backgroundColor = '#FF4742';
+          break;
         default:
           break;
       }
