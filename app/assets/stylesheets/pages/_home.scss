@@ -135,8 +135,9 @@
     padding: 1vh 3vw;
 
     .card {
-      height: 175px;
+      height: auto;
       line-height: 1.0;
+      padding: 20px 20px 0px 20px;
 
       .unopened-card {
         display: block;
