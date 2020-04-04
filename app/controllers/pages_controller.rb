@@ -38,9 +38,8 @@ class PagesController < ApplicationController
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
       github_jobs = scrape_all_github_jobs($search, $city)
-      ordered_indeed = order_indeed_by_date(indeed_jobs)
-      ordered_github = order_github_jobs_by_date(github_jobs)
-      render json: landing_jobs + ordered_indeed + ordered_github
+      ordered_jobs =  order_cards_by_date(indeed_jobs + github_jobs)
+      render json: landing_jobs + ordered_jobs
     end
   end
 
@@ -121,11 +120,16 @@ end
     jobs = []
     parsed_page.css('div.jobsearch-SerpJobCard').each do |card|
       scraped_date = card.css('span.date').text.scan(/\d+/).join
+      date_code = 0
       final_date = ""
       if card.css('span.date').text.include? "30"
         final_date = "+" + scraped_date + "d"
+        date_code = 2
+      elsif scraped_date == ""
+        final_date = "Today"
       else
         final_date = scraped_date + "d"
+        date_code = 2
       end
       job = {
         title: card.css('div.title', 'a.title').text.gsub("\n",''),
@@ -133,7 +137,8 @@ end
         url: url + "&vjk=" + card.attribute('data-jk'),
         company: card.css('div.sjcl', 'div.span.company').text.gsub("\n",'').gsub(location, '').match(/[a-zA-Z]+/)[0],
         source: "Indeed",
-        posted_date: final_date
+        posted_date: final_date,
+        date_code: date_code
       }
       jobs << job
     end
@@ -180,7 +185,6 @@ end
       skill.gsub!(" ", "+")
     end
     url = "https://landing.jobs/jobs?city_search=#{location}&country=#{country_code}&page=1&q=#{skill}&hd=false&t_co=false&t_st=false"
-    p url
     $browser.goto url
     sleep 4
     parsed_page = Nokogiri::HTML($browser.html)
@@ -259,15 +263,7 @@ end
     render json: job
   end
 
-  def order_indeed_by_date(array)
-    sorted_array = []
-    array.each do |element|
-      sorted_array = array.sort_by { |element|  element[:posted_date].match(/\d+/).to_s.to_i }
-    end
-    sorted_array.reverse
-  end
-
-  def order_github_jobs_by_date(array)
+  def order_cards_by_date(array)
     sorted_array = []
     array.each do |element|
       sorted_array = array.sort_by { |element| [element[:date_code], element[:posted_date].match(/\d+/).to_s.to_i] }
