@@ -31,6 +31,8 @@ class PagesController < ApplicationController
         scrape_one_github_jobs(params[:url])
       elsif params[:url].include? "remoteok"
         scrape_one_remoteok(params[:url])
+      elsif params[:url].include? "stackoverflow"
+        scrape_one_stackoverflow(params[:url])
       else
         scrape_one_landing_jobs(params[:url])
       end
@@ -355,6 +357,14 @@ end
       jobs << job
     end
     jobs
+  end
+
+  def scrape_one_stackoverflow(url)
+    parsed_page = Nokogiri::HTML(HTTParty.get(url))
+    job = {
+      description: parsed_page.css('section.fs-body2').to_s.gsub("\r", "").gsub("\n", "")
+    }
+    render json: job
   end
 
   def order_cards_by_date(array)
