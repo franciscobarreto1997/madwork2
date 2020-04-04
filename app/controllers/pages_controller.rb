@@ -34,6 +34,9 @@ class PagesController < ApplicationController
       end
     elsif american_states_array.include? $search
       scrape_all_indeed($search, $city)
+    elsif $city == "Remote"
+      ordered_jobs = order_cards_by_date(scrape_all_remoteok($search))
+      render json: ordered_jobs
     else
       indeed_jobs = scrape_all_indeed($search, $city)
       landing_jobs = scrape_all_landing_jobs($search, $city)
@@ -232,13 +235,13 @@ end
         final_date = scraped_date.scan(/\d+/).join + "d"
         date_code = 2
       elsif (scraped_date.include? "months") || (scraped_date.include? "month")
-        final_date = scraped_date.scan(/\d+/).join + "m"
+        final_date = scraped_date.scan(/\d+/).join + "mo"
         date_code = 3
       elsif (scraped_date.include? "hours") || (scraped_date.include? "hour")
         final_date = scraped_date.scan(/\d+/).join + "h"
         date_code = 1
       else
-        final_date = scraped_date.scan(/\d+/).join + "y"
+        final_date = scraped_date.scan(/\d+/).join + "yr"
         date_code = 4
       end
       job = {
@@ -261,6 +264,55 @@ end
       description: parsed_page.css('div.main').to_s.gsub("\n", "")
     }
     render json: job
+  end
+
+  def unduplicate_title(title)
+    word_array = title.split(" ")
+    median_index = median(word_array)
+    word_array.delete_at(median_index)
+    word_array.uniq.join(" ")
+  end
+
+  def median(array)
+    indexes = array.count - 1
+    middle_index = indexes / 2
+  end
+
+  def scrape_all_remoteok(skill)
+    if skill.include? " "
+      skill.gsub!(" ", "-")
+    end
+    url = "https://remoteok.io/remote-#{skill.downcase}-jobs"
+    p url
+    parsed_page = Nokogiri::HTML(HTTParty.get(url))
+    jobs = []
+    parsed_page.css('tr.job').each do |row|
+
+      duplicated_title = row.css('td.company h2').text
+      date = row.css("td.time a").text
+
+      if date.include? "h"
+        date_code = 1
+      elsif date.include? "d"
+        date_code = 2
+      elsif date.include? "mo"
+        date_code = 3
+      else
+        date_code = 4
+      end
+
+      job = {
+        title: unduplicate_title(duplicated_title),
+        location: "Remote",
+        url: 'https://remoteok.io' + row.attribute('data-url').value,
+        company: row.css('td.company a.companyLink h3').text,
+        source: "remote|OK",
+        posted_date: date,
+        date_code: date_code
+      }
+      jobs << job
+    end
+    jobs
   end
 
   def order_cards_by_date(array)

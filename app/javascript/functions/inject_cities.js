@@ -3,6 +3,7 @@ import inject from './inject';
 
 const injectCities = () => {
   const selectCountryElement = document.getElementById('country');
+  const selectCityElement = document.getElementById('city');
 
   if (selectCountryElement) {
     selectCountryElement.addEventListener('change', (event) => {
@@ -40,6 +41,12 @@ const injectCities = () => {
         case 'Italy':
           axios.get('/fetch_italian_cities')
             .then(data => inject(data.data))
+          break;
+        case 'Remote':
+          if (selectCityElement) {
+            selectCityElement.innerHTML = ""
+            selectCityElement.insertAdjacentHTML('beforeend', `<option value="Remote">Remote</option>`)
+          }
           break;
         default:
           break;
