@@ -17,6 +17,9 @@ const colorSourceButton = () => {
         case "remote|OK":
           button.style.backgroundColor = '#FF4742';
           break;
+        case "stackoverflow":
+          button.style.backgroundColor = '#f48024';
+          break;
         default:
           break;
       }
