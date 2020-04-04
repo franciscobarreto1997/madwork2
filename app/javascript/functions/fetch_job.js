@@ -11,7 +11,7 @@ const fetchJob = () => {
 
       if (card.querySelector('#description')) {
         if (mediaQuery.matches) {
-          card.style.height = '175px'
+          card.style.height = 'auto'
           card.style.lineHeight = '1.0'
         } else {
           card.style.height = '100px'
