@@ -9,7 +9,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "intro.js": "^2.9.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "js-autocomplete": "^1.0.4",
     "popper.js": "^1.16.1",
     "turbolinks": "^5.2.0",
